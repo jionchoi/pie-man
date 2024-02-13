@@ -1,0 +1,23 @@
+body{
+    /* background-color*/    
+}
+
+#count{
+    /* position is fixed because it will stay in the same location and z-index should be greater than any other 
+    elements*/    
+    position: fixed;
+    z-index: 10;
+}
+
+#pieMan{
+    position: fixed;
+    width: 150px;
+    height: 150px;
+}
+
+#pellet{
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    
+}
