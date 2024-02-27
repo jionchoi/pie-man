@@ -34,7 +34,9 @@ var pieMan = {
     }
 }
 
-var timer = 5000; //10 seconds timer
+
+
+var timer = 9000; //10 seconds timer
 
 
 //Since there are more than one pellet, create a class so that we can manage all pellets created
@@ -84,12 +86,15 @@ function addPellet(){
 
 //remove Pellet after certain amount of time (timer)
 function removePellet(count, pellet){
+    console.log(pellet);
+    console.log(count);
     // var index = pellets.indexOf(pellet);
     if(pellets.includes(pellet)){
         //remove the pellet
         $("#" + count).remove();
         pellets.splice(pellet, 1); 
         timer *= 0.95; //decrease time
+        console.log("removed!");
     }
 }
 
