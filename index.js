@@ -37,7 +37,7 @@ var pieMan = {
 
 
 var timer = 9000; //10 seconds timer
-
+var timerObj = {}; 
 
 //Since there are more than one pellet, create a class so that we can manage all pellets created
 class Pellet {
@@ -53,7 +53,7 @@ class Pellet {
         $("#" + this.count).css({"width": this.width, "height": this.height, "position": "fixed"});
         $("#" + this.count).css({"left": this.x + "px","bottom": this.y + "px"});
         //remove uncollected pellet after "timer" time
-        setTimeout(removePellet, timer, this.count, this);
+        timerObj[this.count] = setTimeout(removePellet, timer, this);
     }
 }
 
@@ -70,14 +70,19 @@ var resetGame = (function(){
 
 //collect pellet if collided 
 function collectPellet(touched, index){
+    // Clear the timeout associated with the pellet
+    clearTimeout(timerObj[touched]);
+
     //delete pellet
     pellets.splice(index, 1);
     $("#" + touched).remove();
     $("#count").html(`Pellet Count: <b>${collectNum}<b>`); //update count of pellet
+    // clearTimeout(touched);
 }
 
 //Add new pellet
 function addPellet(){
+    timer *= 0.95; //decrease time
     var pellet = new Pellet();
     pellets.push(pellet);
     pellet.make();
@@ -85,17 +90,13 @@ function addPellet(){
 }
 
 //remove Pellet after certain amount of time (timer)
-function removePellet(count, pellet){
-    console.log(pellet);
-    console.log(count);
-    // var index = pellets.indexOf(pellet);
-    if(pellets.includes(pellet)){
-        //remove the pellet
-        $("#" + count).remove();
-        pellets.splice(pellet, 1); 
-        timer *= 0.95; //decrease time
-        console.log("removed!");
-    }
+function removePellet(pellet){
+    console.log(pellets);
+    //remove the pellet
+    $("#" + pellet.count).remove();
+    pellets.splice(pellets.indexOf(pellet), 1); 
+    console.log(pellet.count + "removed!");
+    checkEnd();
 }
 
 //check game end
@@ -184,7 +185,6 @@ function movePie(){
     //create new pieMan
     pieMan.make();
     moveMent++; //increment for pie image
-    checkEnd(); //check if there's any remaining pellet on the screen
 }
 
 //run the game
