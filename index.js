@@ -18,11 +18,12 @@ function randNum(min, max){
     if right, ChangeX = 7, if left ChangeX = -7, if up ChagneY = 7, if down, ChangeY = -7
 
 */
-const pieMaxX = window.innerWidth - 100;
+const pieMaxX = window.innerWidth - 100; //Maximum x coordinate that pie man can move
 const pieMinX = 0;
-const pieMaxY = window.innerHeight - 100;
+const pieMaxY = window.innerHeight - 100; //Maximum y coordinate that pie man can move
 const pieMinY = 0;
 
+//pie man object
 var pieMan = {
     x: 40,
     y: 40,
@@ -51,9 +52,6 @@ class Pellet {
         $("#" + this.count).css({"left": this.x + "px","bottom": this.y + "px"});
         //remove uncollected pellet after "timer" time
         setTimeout(removePellet, timer, this.count, this);
-        // setTimeout(function (){
-        //     removePellet(this.count)
-        // }, timer);
     }
 }
 
@@ -68,7 +66,7 @@ var resetGame = (function(){
     addPellet();
 }());
 
-
+//collect pellet if collided 
 function collectPellet(touched, index){
     //delete pellet
     pellets.splice(index, 1);
@@ -84,16 +82,15 @@ function addPellet(){
     pelletCount++; //increase the number of pellet
 }
 
+//remove Pellet after certain amount of time (timer)
 function removePellet(count, pellet){
-    console.log(pellets);
     // var index = pellets.indexOf(pellet);
     if(pellets.includes(pellet)){
         //remove the pellet
         $("#" + count).remove();
         pellets.splice(pellet, 1); 
-        timer *= 0.95;
+        timer *= 0.95; //decrease time
     }
-    console.log(pellets);
 }
 
 //check game end
@@ -101,6 +98,8 @@ function checkEnd(){
     //if there is no remaining pellet in the game, end the game 
     if(pellets.length == 0){
         cancelAnimationFrame(animation);
+        $("#endGame").css("display", "inline");
+        $("p").html(`Your Final Score: <b>${collectNum}<b>`);
     }
 }
 
@@ -110,6 +109,7 @@ function checkEnd(){
 function collisionCheck(pieMan, pelletInArray, index){
     let pieManCenterX = pieMan.x + (50);
     let pieManCenterY = pieMan.y + (50);
+    //the difference between pieman and pellet
     var xDiff = pelletInArray.x < pieManCenterX + 30 && pieManCenterX - 30 < (pelletInArray.x + pelletInArray.width);
     var yDiff = pelletInArray.y < pieManCenterY + 30 && pieManCenterY - 30 < (pelletInArray.y + pelletInArray.height);
     var touched = pelletInArray.count; //pellet collided
@@ -129,35 +129,35 @@ var previousKey = 39;
 var moveMent = 1; //left right up down
 var animation;
 
-
+//change pieman's direction 
 function changeDir(){
     switch(key){
         //right
         case 39:
             pieMan.changeX = 7;
-            pieMan.x = Math.min(pieMaxX, pieMan.x + pieMan.changeX);
-            //change the image
+            pieMan.x = Math.min(pieMaxX, pieMan.x + pieMan.changeX); //if pieman goes over the screen, change its x to the max value
+            //update the image
             $("#pieMan").attr("src", "images/Right" + moveMent + ".PNG");
             break;
         //left
         case 37:
             pieMan.changeX = -7;
-            pieMan.x = Math.max(pieMinX, pieMan.x + pieMan.changeX);
-            //change the image
-            $("#pieMan").attr("src", "images/Left" + moveMent + ".PNG");
+            pieMan.x = Math.max(pieMinX, pieMan.x + pieMan.changeX); //if pieman goes over the screen, change its x to the min value
+            //update the image
+            $("#pieMan").attr("src", "images/Left" + moveMent + ".PNG"); 
             break;
         //up
         case 38:
             pieMan.changeY = 7;
-            pieMan.y = Math.min(pieMaxY, pieMan.y + pieMan.changeY);
-            //change the image
-            $("#pieMan").attr("src", "images/Up" + moveMent + ".PNG");
+            pieMan.y = Math.min(pieMaxY, pieMan.y + pieMan.changeY); //if pieman goes over the screen, change its y to the max value
+            //update the image
+            $("#pieMan").attr("src", "images/Up" + moveMent + ".PNG"); 
             break;
         //down
         case 40:
             pieMan.changeY = -7;
-            pieMan.y = Math.max(pieMinY, pieMan.y + pieMan.changeY);
-            //change the image
+            pieMan.y = Math.max(pieMinY, pieMan.y + pieMan.changeY); //if pieman goes over the screen, change its y to the min value
+            //update the image
             $("#pieMan").attr("src", "images/Down" + moveMent + ".PNG");
             break;
     }
@@ -167,11 +167,11 @@ function changeDir(){
 function movePie(){
     if(moveMent > 12) moveMent = 1; //if the movement is 13, change it back to 1
 
-    animation = requestAnimationFrame(movePie); //animation 
+    animation = requestAnimationFrame(movePie); //animation(call this function every frame)
     changeDir(); //change the direction of pie-man
     previousKey = key; //change the previous key to pressed key
 
-    //check all elements in the array and check collision
+    //iterate all elements in the array and check collision
     pellets.forEach((a, i) =>{
         collisionCheck(pieMan, a, i);
     });
@@ -179,7 +179,7 @@ function movePie(){
     //create new pieMan
     pieMan.make();
     moveMent++; //increment for pie image
-    checkEnd();
+    checkEnd(); //check if there's any remaining pellet on the screen
 }
 
 //run the game

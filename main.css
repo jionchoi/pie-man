@@ -1,24 +1,37 @@
 body{
-    /* background-color*/    
+    /* background-color*/ 
+    overflow: hidden;   
 }
 
 #count{
     /* position is fixed because it will stay in the same location and z-index should be greater than any other 
     elements*/    
-    position: fixed;
+    position: relative;
     z-index: 10;
 }
 
 #pieMan{
     position: fixed;
-    width: 100px;
-    height: 100px;
+    width: 90px;
+    height: 90px;
     
 }
 
 #pellet{
     position: absolute;
     width: 70px;
-    height: 70px;
-    
+    height: 70px;    
+}
+
+#endGame{
+    display: none;
+}
+p{
+    width: 370px;
+    font-size: 40px;
+    border: 2px solid red;
+    border-radius: 5px;
+    margin-left: 38%;
+    margin-top: 20%;
+    box-shadow: 5px 5px 5px 5px #888888;
 }
