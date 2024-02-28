@@ -36,7 +36,7 @@ var pieMan = {
 
 
 
-var timer = 9000; //10 seconds timer
+var timer = 10000; //10 seconds timer
 var timerObj = {}; 
 
 //Since there are more than one pellet, create a class so that we can manage all pellets created
@@ -77,7 +77,6 @@ function collectPellet(touched, index){
     pellets.splice(index, 1);
     $("#" + touched).remove();
     $("#count").html(`Pellet Count: <b>${collectNum}<b>`); //update count of pellet
-    // clearTimeout(touched);
 }
 
 //Add new pellet
